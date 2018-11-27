@@ -1,4 +1,9 @@
 #include "Pos.h"
+Pos::Pos(int num){
+    x=7-(num%8);
+    y=7-num/8;
+
+}
 Pos::Pos(int argx,int argy){
     x=argx;
     y=argy;

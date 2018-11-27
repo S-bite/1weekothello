@@ -4,15 +4,24 @@
 #include "Pos.h"
 class Board{
 private:
+public:
 bitboard boardBlack;
 bitboard boardWhite;
-public:
-void setStone(Pos p, color col);
+color turn;
+Board();
+void putStone(Pos p);
 bitboard shiftBoardRight(bitboard b);
 bitboard shiftBoardLeft(bitboard b);
 bitboard shiftBoardDown(bitboard b);
 bitboard shiftBoardUp(bitboard b);
-void flip(Pos p,color col);
+bitboard shiftBoardRightUp(bitboard b);
+bitboard shiftBoardRightDown(bitboard b);
+bitboard shiftBoardLeftUp(bitboard b);
+bitboard shiftBoardLeftDown(bitboard b);
+
+bitboard getLiegalBoard(void);
+bool isFilled(void);
+void flip(Pos p);
 void draw(void);
 };
 #endif
