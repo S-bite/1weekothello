@@ -10,6 +10,7 @@ bitboard boardWhite;
 color turn;
 Board();
 void putStone(Pos p);
+
 bitboard shiftBoardRight(bitboard b);
 bitboard shiftBoardLeft(bitboard b);
 bitboard shiftBoardDown(bitboard b);
@@ -19,9 +20,10 @@ bitboard shiftBoardRightDown(bitboard b);
 bitboard shiftBoardLeftUp(bitboard b);
 bitboard shiftBoardLeftDown(bitboard b);
 
-bitboard getLiegalBoard(void);
+bitboard getLegalBoard(void);
 bool isFilled(void);
 void flip(Pos p);
 void draw(void);
+int eval(void);
 };
 #endif

@@ -1,10 +1,12 @@
-  #include<random>
+#include<random>
 
 #include<iostream>
 #include "constants.h"
 #include "Pos.h"
 #include "Board.h"
 #include "BitBoardUtil.hpp"
+#include "search.hpp"
+
 using namespace std;
 
 
@@ -55,7 +57,7 @@ bitboard Board::shiftBoardLeftDown(bitboard b){
   return Board::shiftBoardLeft(Board::shiftBoardDown(b));
 }
 
-bitboard Board::getLiegalBoard(void){
+bitboard Board::getLegalBoard(void){
   bitboard leagalBoard=0x0000000000000000;
   bitboard blankBoard=~(boardBlack|boardWhite);
   color mcol=turn;
@@ -270,6 +272,16 @@ void Board::flip(Pos p){
     
     return;
   }
+
+int Board::eval(){
+    color mcol=turn;
+    color ecol=!mcol;
+    bitboard mboard=(mcol==BLACK)?boardBlack:boardWhite;
+    bitboard eboard=(ecol==BLACK)?boardBlack:boardWhite;
+    return numOfBits(mboard)-numOfBits(eboard);
+
+}
+
 void Board::draw(void){
     std::cout<<"+--------+"<<std::endl;
     for (int i=63;i>=0;i--){
@@ -294,15 +306,17 @@ std::uniform_int_distribution<int> rpos(0, 63);
   b.draw();
 
   while (!b.isFilled()){
-    bitboard legal=b.getLiegalBoard();
+    bitboard legal=b.getLegalBoard();
     if (legal==0){
       b.turn=!b.turn;
       continue;
     }
     b.draw();
-    int nextPos=rpos(mt);
-    while ((legal>>(nextPos)&1)==0){nextPos=(nextPos+1)%64;}
-    b.putStone(Pos(nextPos));
+    std::cout<<b.eval()<<std::endl;
+    Pos best=search(b);
+  
+    b.putStone(best);
+    
     }
     b.draw();
   return 0;
