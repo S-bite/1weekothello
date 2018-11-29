@@ -283,41 +283,18 @@ int Board::eval(){
 }
 
 void Board::draw(void){
-    std::cout<<"+--------+"<<std::endl;
+    std::cout<<"   0 1 2 3 4 5 6 7"<<std::endl;
+    std::cout<<"  -----------------"<<std::endl;
     for (int i=63;i>=0;i--){
-        if (i%8==7) std::cout<<"|";
-        char c='.';
+        if (i%8==7) std::cout<<(7-i/8)<<" ";
+        char c=' ';
         if ((boardBlack>>i)&1ll==1) c='x';
         if ((boardWhite>>i)&1ll==1) c='o';
-        std::cout<<c;
-        if (i%8==0)std::cout<<"|"<<std::endl;
+        std::cout<<"|"<<c;
+        if (i%8==0)std::cout<<"|"<<std::endl<<"  -----------------"<<std::endl;
     }
-
-    std::cout<<"+--------+"<<std::endl;
     return;
 }
 
 
 
-int main(){
-std::mt19937 mt{ std::random_device{}() };
-std::uniform_int_distribution<int> rpos(0, 63);
-  Board b= Board();
-  b.draw();
-
-  while (!b.isFilled()){
-    bitboard legal=b.getLegalBoard();
-    if (legal==0){
-      b.turn=!b.turn;
-      continue;
-    }
-    b.draw();
-    std::cout<<b.eval()<<std::endl;
-    Pos best=search(b);
-  
-    b.putStone(best);
-    
-    }
-    b.draw();
-  return 0;
-}
