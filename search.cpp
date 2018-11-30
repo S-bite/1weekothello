@@ -4,6 +4,8 @@
 #include "Board.h"
 #include "search.hpp"
 #include "BitBoardUtil.hpp"
+using std::cout;
+using std::endl;
 using std::max;
 using std::min;
 
@@ -27,11 +29,13 @@ Pos search(Board b)
             t = b;
         }
     }
+    cout << "best score: " << maxScore << endl;
     return ret;
 }
 
 int evalDeeply(Board b, int maxDepth, int currentDepth, int alpha, int beta)
 {
+    bool DBGF = true;
     bool rootTrun = (currentDepth % 2 == 0); //0 2 4 ...番目がsearchで呼び出した方のターンになる
     int bestScore = (rootTrun) ? -MAXSCORE : MAXSCORE;
     Board t = b;
@@ -47,16 +51,23 @@ int evalDeeply(Board b, int maxDepth, int currentDepth, int alpha, int beta)
             if (rootTrun)
             {
                 bestScore = max(bestScore, score);
-                if (bestScore > beta)
+
+                if (bestScore > alpha)
+                {
+                    cout << "beta cut" << endl;
                     return bestScore;
+                }
                 else
                     beta = bestScore;
             }
             else
             {
                 bestScore = min(bestScore, score);
-                if (bestScore < alpha)
+                if (bestScore < beta)
+                {
+                    cout << "alpha cut" << endl;
                     return bestScore;
+                }
                 else
                     alpha = bestScore;
             }
